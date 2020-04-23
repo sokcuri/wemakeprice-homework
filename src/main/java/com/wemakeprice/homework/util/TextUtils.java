@@ -1,5 +1,6 @@
 package com.wemakeprice.homework.util;
 import com.wemakeprice.homework.domain.DivisionText;
+import com.wemakeprice.homework.enums.RegexEnum;
 import com.wemakeprice.homework.enums.TextType;
 
 import java.util.Comparator;
@@ -32,18 +33,24 @@ public class TextUtils {
 
     public static DivisionText getUnit(String mergedText, int outputUnitCount) {
         int mod = mergedText.length() % outputUnitCount;
+        int quotaRange = mergedText.length() - mod;
 
         return DivisionText.builder()
-                .quota(mergedText.substring(0, mod))
-                .remainder(mergedText.substring(mod))
+                .quota(mergedText.substring(0, quotaRange))
+                .remainder(mergedText.substring(quotaRange))
                 .build();
     }
 
-    public static String getSortedTextFromStream(Stream<String> textStream, TextType textType) {
-        return getSortedStream(textStream, textType).collect(Collectors.joining());
+    public static String getSortedText(String text, TextType textType) {
+        RegexEnum regexEnum = textType == TextType.ALPHABET ? RegexEnum.ONLY_ALPHABET : RegexEnum.ONLY_NUMBER;
+
+        return getSortedStream(
+                regexEnum.getMatchedTextStream(text),
+                textType
+        ).collect(Collectors.joining());
     }
 
-    public static Stream<String> getSortedStream(Stream<String> textStream, TextType textType) {
-        return textType == TextType.ALPHABET ? textStream.sorted(String.CASE_INSENSITIVE_ORDER) : textStream.sorted();
+    private static Stream<String> getSortedStream(Stream<String> textStream, TextType textType) {
+        return textType == TextType.ALPHABET ? textStream.sorted().sorted(String.CASE_INSENSITIVE_ORDER) : textStream.sorted();
     }
 }

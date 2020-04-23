@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Homework</title>
+</head>
+<body>
+<div id="homework">
+    <div>
+        <label for="url">URL</label>
+        <input type="text" id="url" name="url" v-model="url" size="60" />
+    </div>
+    <div>
+        <span>type</span>
+        <select name="type" id="type" v-model="type">
+            <option value="exclude_html">HTML 태그 제외</option>
+            <option value="full_text" selected>텍스트 전체 (HTML 태그 포함)</option>
+        </select>
+    </div>
+    <div>
+        <label for="outputUnitCount">출력묶음단위 (자연수)</label>
+        <input type="text" id="outputUnitCount" v-model="outputUnitCount" size="10" @keypress="isNumber($event)" />
+    </div>
+    <div>
+        <button @click="submit">출력</button>
+    </div>
+    <div>
+        영어만 출력 : {{ outputData.alphabetValue }}
+    </div>
+    <div>
+        숫자만 출력 : {{ outputData.numericValue }}
+    </div>
+    <div>
+        오름차순 (영어) : {{ outputData.ascendingSortedAlphabetValue }}
+    </div>
+    <div>
+        오름차순 (숫자) : {{ outputData.ascendingSortedNumericValue }}
+    </div>
+    <div>
+        교차출력 : {{ outputData.mixedValue }}
+    </div>
+    <div>
+        출력묶음단위 :
+        <div>
+            몫 : {{ outputData.quota }}
+        </div>
+        <div>
+            나머지 : {{ outputData.remainder }}
+        </div>
+    </div>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

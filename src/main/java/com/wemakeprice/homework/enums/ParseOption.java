@@ -1,8 +1,8 @@
 package com.wemakeprice.homework.enums;
 
 public enum ParseOption {
-    HTML("html"),
-    TEXT("text");
+    EXCLUDE_HTML("exclude_html"),
+    FULL_TEXT("full_text");
 
     private String type;
 

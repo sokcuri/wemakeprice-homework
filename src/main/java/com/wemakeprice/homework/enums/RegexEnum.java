@@ -1,6 +1,5 @@
 package com.wemakeprice.homework.enums;
 
-import java.util.Comparator;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -9,11 +8,9 @@ import java.util.stream.Stream;
  */
 public enum RegexEnum {
 
-    ONLY_ALPHABET("[^a-zA-Z]*"),
+    ONLY_ALPHABET("[^a-zA-Z]+"),
 
-    ONLY_NUMBER("[^0-9]*"),
-
-    REMOVE_HTML("<[^>]*>");
+    ONLY_NUMBER("[^0-9]+");
 
     private String regexPattern;
 
@@ -22,9 +19,6 @@ public enum RegexEnum {
     }
 
     public String getMatchedText(String crawlingText) {
-        if (crawlingText.matches(regexPattern)) {
-            return "";
-        }
         return crawlingText.replaceAll(regexPattern, "");
     }
 

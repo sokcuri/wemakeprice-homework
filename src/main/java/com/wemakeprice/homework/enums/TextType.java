@@ -1,14 +1,19 @@
 package com.wemakeprice.homework.enums;
 
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 public enum TextType {
-    ALPHABET(
+    ALPHABET(text -> text.sorted().sorted(String.CASE_INSENSITIVE_ORDER)),
+    NUMERIC(Stream::sorted);
 
-    ),
-    NUMERIC(
+    private Function<Stream<String>, Stream<String>> getSortedStreamExpression;
 
-    );
+    TextType(Function<Stream<String>, Stream<String>> getSortedStreamExpression) {
+        this.getSortedStreamExpression = getSortedStreamExpression;
+    }
 
-    private Function<String, String> expression;
+    public Stream<String> getSortedStream(Stream<String> textStream) {
+        return getSortedStreamExpression.apply(textStream);
+    }
 }

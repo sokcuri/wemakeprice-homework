@@ -16,7 +16,9 @@ public class CrawlingApiResponse {
 
     private String mixedValue;
 
-    private String ascendingSortedValue;
+    private String ascendingSortedAlphabetValue;
+
+    private String ascendingSortedNumericValue;
 
     private DivisionText divisionTextValue;
 

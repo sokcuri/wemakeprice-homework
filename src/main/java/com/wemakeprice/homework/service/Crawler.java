@@ -4,6 +4,7 @@ import com.wemakeprice.homework.domain.CrawlingApiRequest;
 import com.wemakeprice.homework.domain.CrawlingApiResponse;
 import com.wemakeprice.homework.enums.ParseOption;
 import com.wemakeprice.homework.enums.RegexEnum;
+import com.wemakeprice.homework.enums.TextType;
 import com.wemakeprice.homework.util.CrawlingUtils;
 import com.wemakeprice.homework.util.TextUtils;
 import org.jsoup.Jsoup;
@@ -22,12 +23,23 @@ public class Crawler {
         }
         String content = CrawlingUtils.getParsedText(htmlDocument, ParseOption.valueOf(request.getType().toUpperCase()));
 
+        String alphabetText = RegexEnum.ONLY_ALPHABET.getMatchedText(content);
+        String numericText = RegexEnum.ONLY_NUMBER.getMatchedText(content);
+        return makeApiResponse(alphabetText, numericText, request.getOutputUnitCount());
+    }
+
+    private CrawlingApiResponse makeApiResponse(String alphabetText, String numericText, int outputUnitCount) {
+        String ascendingSortedAlphabetValue = TextUtils.getSortedText(alphabetText, TextType.ALPHABET);
+        String ascendingSortedNumericValue = TextUtils.getSortedText(numericText, TextType.NUMERIC);
+        String mixedText = TextUtils.getMixedText(ascendingSortedAlphabetValue, ascendingSortedNumericValue);
+
         return CrawlingApiResponse.builder()
-                .alphabetValue(RegexEnum.ONLY_ALPHABET.getMatchedText(content))
-                .numericValue(RegexEnum.ONLY_NUMBER.getMatchedText(content))
-                .ascendingSortedValue(content)
-                .mixedValue(content)
-                .divisionTextValue(TextUtils.getUnit(content, request.getOutputUnitCount()))
+                .alphabetValue(alphabetText)
+                .numericValue(numericText)
+                .ascendingSortedAlphabetValue(ascendingSortedAlphabetValue)
+                .ascendingSortedNumericValue(ascendingSortedNumericValue)
+                .mixedValue(mixedText)
+                .divisionTextValue(TextUtils.getUnit(mixedText, outputUnitCount))
                 .build();
     }
 }

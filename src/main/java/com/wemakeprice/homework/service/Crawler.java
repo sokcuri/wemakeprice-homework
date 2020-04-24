@@ -21,11 +21,15 @@ public class Crawler {
         } catch (Exception e) {
             return CrawlingApiResponse.builder().build();
         }
-        String content = CrawlingUtils.getParsedText(htmlDocument, ParseOption.valueOf(request.getType().toUpperCase()));
 
+        return makeApiResponse(CrawlingUtils.getParsedText(htmlDocument, ParseOption.valueOf(request.getType().toUpperCase())), request.getOutputUnitCount());
+    }
+
+    private CrawlingApiResponse makeApiResponse(String content, int outputUnitCount) {
         String alphabetText = RegexEnum.ONLY_ALPHABET.getMatchedText(content);
         String numericText = RegexEnum.ONLY_NUMBER.getMatchedText(content);
-        return makeApiResponse(alphabetText, numericText, request.getOutputUnitCount());
+
+        return makeApiResponse(alphabetText, numericText, outputUnitCount);
     }
 
     private CrawlingApiResponse makeApiResponse(String alphabetText, String numericText, int outputUnitCount) {

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.URL;
 
+import javax.validation.constraints.Min;
+
 /**
  * 크롤링 API 리퀘스트용 객체
  */
@@ -19,6 +21,7 @@ public class CrawlingApiRequest {
     @EnumValue(enumClass = ParseOption.class, message = "유효하지 않은 type입니다.")
     private String type;
 
+    @Min(value = 1)
     private int outputUnitCount;
 
 }

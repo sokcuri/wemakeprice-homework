@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * 크롤링 API 메인 컨트롤러
  */
@@ -23,7 +25,7 @@ public class CrawlingApiController {
     }
 
     @PostMapping("/crawling")
-    public ResponseEntity<CrawlingApiResponse> crawling(@RequestBody CrawlingApiRequest request) {
+    public ResponseEntity<CrawlingApiResponse> crawling(@RequestBody @Valid CrawlingApiRequest request) {
         CrawlingApiResponse response = crawler.execute(request);
         return ResponseEntity.ok(response);
     }

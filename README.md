@@ -64,3 +64,42 @@ URL 주소와 파싱 타입, 출력묶음단위 값을 입력받은 뒤 해당 U
   "path": "/api/crawling"
 }
 ```
+
+* 실패 케이스 (Validation 예외 발생)
+```json
+{
+  "timestamp": "2020-04-24T09:26:11.325+0000",
+  "status": 404,
+  "error": "Not Found",
+  "errors": [
+    {
+      "codes": [
+        "EnumValue.crawlingApiRequest.type",
+        "EnumValue.type",
+        "EnumValue.java.lang.String",
+        "EnumValue"
+      ],
+      "arguments": [
+        {
+          "codes": [
+            "crawlingApiRequest.type",
+            "type"
+          ],
+          "arguments": null,
+          "defaultMessage": "type",
+          "code": "type"
+        },
+        "com.wemakeprice.homework.enums.ParseOption"
+      ],
+      "defaultMessage": "유효하지 않은 type입니다.",
+      "objectName": "crawlingApiRequest",
+      "field": "type",
+      "rejectedValue": "exclude",
+      "bindingFailure": false,
+      "code": "EnumValue"
+    }
+  ],
+  "message": "Validation failed for object='crawlingApiRequest'. Error count: 1",
+  "path": "/api/crawling"
+}
+```

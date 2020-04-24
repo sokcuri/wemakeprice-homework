@@ -19,7 +19,7 @@ public class Crawler {
 
     public CrawlingApiResponse execute(CrawlingApiRequest request) throws CrawlingFailedException {
         try {
-            Document htmlDocument = Jsoup.connect(request.getUrl()).get();
+            Document htmlDocument = Jsoup.connect(request.getUrl()).timeout(5000).get();
             return makeApiResponse(CrawlingUtils.getParsedText(htmlDocument, ParseOption.valueOf(request.getType().toUpperCase())), request.getOutputUnitCount());
         } catch (IOException ioe) {
             throw new CrawlingFailedException(ioe);

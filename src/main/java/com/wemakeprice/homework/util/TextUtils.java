@@ -1,10 +1,10 @@
 package com.wemakeprice.homework.util;
 
 import com.wemakeprice.homework.domain.DivisionText;
+import com.wemakeprice.homework.enums.ParseOption;
 import com.wemakeprice.homework.enums.TextType;
+import org.jsoup.nodes.Document;
 
-import java.util.Comparator;
-import java.util.function.BinaryOperator;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -14,10 +14,15 @@ import java.util.stream.Stream;
  */
 public class TextUtils {
 
-    private static BinaryOperator<String> getMinLengthText = (left, right) ->
-            BinaryOperator.minBy(Comparator.comparingInt(String::length)).apply(left, right);
-    private static BinaryOperator<String> getMaxLengthText = (left, right) ->
-            BinaryOperator.maxBy(Comparator.comparingInt(String::length)).apply(left, right);
+    /**
+     * Jsoup로 크롤링해온 Document를 request에서 받은 type 기반으로 가공하여 돌려줍니다.
+     * @param document Jsoup로 크롤링해온 Document 객체
+     * @param option 파싱 옵션 (exclude_html : html 태그 제외, full_text : html 태그 포함)
+     * @return 파싱 타입에 맞게 추출한 문자열
+     */
+    public static String getParsedText(Document document, ParseOption option) {
+        return option == ParseOption.EXCLUDE_HTML ? document.text() : document.outerHtml();
+    }
 
     /**
      * 영문 문자열과 숫자 문자열을 한글자씩 나눠서 조합하여 돌려줍니다.
@@ -26,15 +31,29 @@ public class TextUtils {
      * @return 조합된 문자열 (ex : A0A0a1a1B2b2...)
      */
     public static String getMixedText(String alphabetText, String numericText) {
-        int minLength = getMinLengthText.apply(alphabetText, numericText).length();
+        int minLength = Math.min(alphabetText.length(), numericText.length());
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < minLength; i++) {
             sb.append(alphabetText.charAt(i)).append(numericText.charAt(i));
         }
 
-        String remainderText = getMaxLengthText.apply(alphabetText, numericText).substring(minLength);
+        if (alphabetText.length() == numericText.length()) {
+            return sb.toString();
+        }
+        String remainderText = getRemainderText(alphabetText, numericText, minLength);
         return sb.append(remainderText).toString();
+    }
+
+    /**
+     * 영문 문자열과 숫자 문자열의 길이를 비교하여, 더 긴 쪽의 여분을 잘라내어 돌려줍니다.
+     * @param alphabetText 영문만 있는 문자열
+     * @param numericText 숫자만 있는 문자열
+     * @param minLength getMixedText 메서드에서 구했던 최소 길이 (둘중 작은 쪽의 길이)
+     * @return 여분 문자열
+     */
+    private static String getRemainderText(String alphabetText, String numericText, int minLength) {
+        return alphabetText.length() == minLength ? numericText.substring(minLength) : alphabetText.substring(minLength);
     }
 
     /**

@@ -5,7 +5,6 @@ import com.wemakeprice.homework.domain.CrawlingApiResponse;
 import com.wemakeprice.homework.enums.ParseOption;
 import com.wemakeprice.homework.enums.RegexEnum;
 import com.wemakeprice.homework.exception.CrawlingFailedException;
-import com.wemakeprice.homework.util.CrawlingUtils;
 import com.wemakeprice.homework.util.TextUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -41,7 +40,7 @@ public class Crawler {
      * @return CrawlingApiResponse
      */
     private CrawlingApiResponse makeApiResponse(Document document, CrawlingApiRequest request) {
-        String content = CrawlingUtils.getParsedText(document, ParseOption.valueOf(request.getType().toUpperCase()));
+        String content = TextUtils.getParsedText(document, ParseOption.valueOf(request.getType().toUpperCase()));
         String alphabetText = RegexEnum.ONLY_ALPHABET.getMatchedText(content);
         String numericText = RegexEnum.ONLY_NUMBER.getMatchedText(content);
 

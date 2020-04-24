@@ -33,7 +33,7 @@ public class CrawlingApiController {
             CrawlingApiResponse response = crawler.execute(request);
             return ResponseEntity.ok(response);
         } catch (CrawlingFailedException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "크롤링 처리 중 오류가 발생하였습니다. URL을 확인 후 다시 시도해주세요.", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
     }
 }

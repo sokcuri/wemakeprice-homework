@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -58,7 +58,15 @@ public class CrawlingApiControllerTest {
                 .content(mapper.writeValueAsString(request))
         ).andDo(print());
 
-        result.andExpect(status().isOk());
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.alphabetValue").exists())
+                .andExpect(jsonPath("$.numericValue").exists())
+                .andExpect(jsonPath("$.mixedValue").exists())
+                .andExpect(jsonPath("$.ascendingSortedAlphabetValue").exists())
+                .andExpect(jsonPath("$.ascendingSortedNumericValue").exists())
+                .andExpect(jsonPath("$.divisionTextValue.quota").exists())
+                .andExpect(jsonPath("$.divisionTextValue.remainder").exists());
     }
 
     private CrawlingApiRequest makeApiRequest(String url, String type, int count) {

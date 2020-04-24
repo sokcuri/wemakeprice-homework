@@ -22,6 +22,14 @@ var app = new Vue({
       }
     },
     submit: function() {
+      if (this.url === '') {
+        alert('URL을 입력해주세요.');
+        return false;
+      }
+      if (this.outputUnitCount === undefined || this.outputUnitCount < 1) {
+        alert('1 이상의 자연수를 입력해주세요.');
+        return false;
+      }
       axios({
         url: 'http://localhost:8080/api/crawling',
         method: 'post',
@@ -40,7 +48,7 @@ var app = new Vue({
         this.outputData.quota = response.data.divisionTextValue.quota;
         this.outputData.remainder = response.data.divisionTextValue.remainder;
       }).catch((ex) => {
-        console.log(ex)
+        alert(ex);
       })
     }
   }

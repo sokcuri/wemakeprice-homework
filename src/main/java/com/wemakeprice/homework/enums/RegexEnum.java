@@ -22,6 +22,11 @@ public enum RegexEnum {
         return crawlingText.replaceAll(regexPattern, "");
     }
 
+    /**
+     * 해당 enum의 정규식을 기반으로 매칭된 문자열 스트림을 돌려줍니다.
+     * @param crawlingText 매칭을 시도할 문자열
+     * @return 매칭이 완료된 string stream
+     */
     public Stream<String> getMatchedTextStream(String crawlingText) {
         return Pattern.compile(regexPattern).splitAsStream(crawlingText).filter(it -> !it.isEmpty());
     }

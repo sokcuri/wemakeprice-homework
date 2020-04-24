@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Request의 type 필드를 검증하기 위한 Enum Custom Validator class
+ */
 public class EnumValidator implements ConstraintValidator<EnumValue, CharSequence> {
 
     private List<String> allowValues;

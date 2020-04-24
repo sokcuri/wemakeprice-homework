@@ -38,7 +38,15 @@ public class TextUtils {
                 .build();
     }
 
-    public static String getSortedText(String text, TextType textType) {
+    public static String getSortedAlphabetText(String text) {
+        return getSortedText(text, TextType.ALPHABET);
+    }
+
+    public static String getSortedNumericText(String text) {
+        return getSortedText(text, TextType.NUMERIC);
+    }
+
+    private static String getSortedText(String text, TextType textType) {
         return getSortedStream(
                 Pattern.compile("").splitAsStream(text),
                 textType

@@ -18,15 +18,12 @@ import java.io.IOException;
 public class Crawler {
 
     public CrawlingApiResponse execute(CrawlingApiRequest request) throws CrawlingFailedException {
-        Document htmlDocument;
-
         try {
-            htmlDocument = Jsoup.connect(request.getUrl()).get();
+            Document htmlDocument = Jsoup.connect(request.getUrl()).get();
+            return makeApiResponse(CrawlingUtils.getParsedText(htmlDocument, ParseOption.valueOf(request.getType().toUpperCase())), request.getOutputUnitCount());
         } catch (IOException ioe) {
             throw new CrawlingFailedException(ioe);
         }
-
-        return makeApiResponse(CrawlingUtils.getParsedText(htmlDocument, ParseOption.valueOf(request.getType().toUpperCase())), request.getOutputUnitCount());
     }
 
     private CrawlingApiResponse makeApiResponse(String content, int outputUnitCount) {
@@ -37,8 +34,8 @@ public class Crawler {
     }
 
     private CrawlingApiResponse makeApiResponse(String alphabetText, String numericText, int outputUnitCount) {
-        String ascendingSortedAlphabetValue = TextUtils.getSortedText(alphabetText, TextType.ALPHABET);
-        String ascendingSortedNumericValue = TextUtils.getSortedText(numericText, TextType.NUMERIC);
+        String ascendingSortedAlphabetValue = TextUtils.getSortedAlphabetText(alphabetText);
+        String ascendingSortedNumericValue = TextUtils.getSortedNumericText(numericText);
         String mixedText = TextUtils.getMixedText(ascendingSortedAlphabetValue, ascendingSortedNumericValue);
 
         return CrawlingApiResponse.builder()

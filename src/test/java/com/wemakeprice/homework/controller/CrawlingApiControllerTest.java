@@ -69,6 +69,20 @@ public class CrawlingApiControllerTest {
                 .andExpect(jsonPath("$.divisionTextValue.remainder").exists());
     }
 
+    @Test
+    public void 컨트롤러_실패_예외_케이스() throws Exception {
+        CrawlingApiRequest request = makeApiRequest("http://naver", "full_text", 1);
+
+        ResultActions result = mockMvc.perform(
+                post("http://localhost:8080/api/crawling")
+                        .contentType(contentType)
+                        .content(mapper.writeValueAsString(request))
+        ).andDo(print());
+
+        result.andExpect(status().is5xxServerError())
+                .andExpect(status().reason("크롤링 처리 중 오류가 발생하였습니다. URL을 확인 후 다시 시도해주세요."));
+    }
+
     private CrawlingApiRequest makeApiRequest(String url, String type, int count) {
         CrawlingApiRequest request = new CrawlingApiRequest();
 

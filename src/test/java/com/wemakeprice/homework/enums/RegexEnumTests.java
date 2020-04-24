@@ -1,6 +1,5 @@
-package com.wemakeprice.homework;
+package com.wemakeprice.homework.enums;
 
-import com.wemakeprice.homework.enums.RegexEnum;
 import org.junit.jupiter.api.Test;
 
 import java.util.stream.Collectors;

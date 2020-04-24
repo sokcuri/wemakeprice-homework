@@ -13,12 +13,21 @@ class TextUtilsTest {
     private String longNumericText = "135790864222123";
 
     @Test
-    public void 영문_숫자_한글자씩조합() {
+    public void 정렬_확인_테스트() {
         String sortedAlphabetText = TextUtils.getSortedAlphabetText(shortAlphabetText);
         String sortedNumericText = TextUtils.getSortedNumericText(shortNumericText);
 
         assertThat(sortedAlphabetText).isEqualTo("AaaddeFfsstt");
         assertThat(sortedNumericText).isEqualTo("01356789");
+    }
+
+    @Test
+    public void 영문_숫자_한글자씩조합() {
+        String sortedAlphabetText = TextUtils.getSortedAlphabetText(shortAlphabetText);
+        String sortedNumericText = TextUtils.getSortedNumericText(shortNumericText);
+        String mixedText = TextUtils.getMixedText(sortedAlphabetText, sortedNumericText);
+
+        assertThat(mixedText).isEqualTo("A0a1a3d5d6e7F8f9sstt");
     }
 
     @Test
